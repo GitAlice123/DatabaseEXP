@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Global.Global;
 
 /*
     * @Description: 登录界面
@@ -80,13 +81,17 @@ public class LoginView extends JFrame{
                 String username = userText.getText();
                 String password = String.valueOf(passwordText.getPassword());
                 String identity = identityText.getText();
-                if (DAO.UserDAO.login(username, password, identity)) {
+                String userID;
+                if ((userID=DAO.UserDAO.login(username, password, identity))!=null) {
+                    Global.setUserID(userID);
                     JOptionPane.showMessageDialog(null, "登录成功！");
-                    if (identity.equals("管理员")) {
+                    if (identity.equals("ADMIN")) {
 //                        new AdminView();
-                    } else if (identity.equals("用户")) {
-//                        new UserView();
-                    } else if(identity.equals("商家")) {
+                    } else if (identity.equals("CUS")) {
+                        new UserView();
+                        // 退出登录界面
+                        ((JFrame)panel.getRootPane().getParent()).dispose();
+                    } else if(identity.equals("SHOP")) {
 //                        new SellerView();
                     }
                 } else {

@@ -3,27 +3,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.Vector;
 import Global.Global;
 
-
 /**
- * @Description: 用户主界面：两个按钮入口
- * 1. 用户商品界面
- * 2. 用户订单界面
+ * @Description: 卖家界面：两个按钮
+ * 1. 商品界面
+ * 2. 销售记录界面
  */
-public class UserView {
+public class SellerView {
     JFrame frame;
     JPanel panel;
     public static void main(String[] args) {
-        new UserView();
+        new SellerView();
     }
-    public UserView(){
+    public SellerView(){
         initComponents();
     }
     private void initComponents() {
-        frame = new JFrame("用户主界面");
+        frame = new JFrame("卖家界面");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
@@ -46,7 +43,7 @@ public class UserView {
         JButton productButton = new JButton("商品");
         productButton.setBounds(100, 100, 80, 25);
         panel.add(productButton);
-        JButton orderButton = new JButton("订单");
+        JButton orderButton = new JButton("销售记录");
         orderButton.setBounds(200, 100, 80, 25);
         panel.add(orderButton);
         // 商品按钮监听器
@@ -54,15 +51,15 @@ public class UserView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new UserProductView();
+                new SellerProductView();
             }
         });
-        // 订单按钮监听器
+        // 销售记录按钮监听器
         orderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-//                new UserOrderView();
+                new SellerRecordView();
             }
         });
     }
