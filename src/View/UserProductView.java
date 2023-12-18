@@ -91,6 +91,7 @@ public class UserProductView {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                showProductTable();
                 cardLayout.show(panel, "card1");
             }
         });
@@ -118,7 +119,10 @@ public class UserProductView {
                     }
                     // 重新展示购物车信息
                     // 让card2立刻刷新
+//                    frame.dispose();
+//                    new UserProductView();
                     showCartTable();
+                    cardLayout.show(panel, "card2");
 
                     JOptionPane.showMessageDialog(null, "删除成功！！！");
                 }
@@ -134,19 +138,24 @@ public class UserProductView {
                 int result = JOptionPane.showConfirmDialog(null, "确认生成订单？", "确认", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     String orderID = null;
+                    try {
+                        orderID = OrderDAO.generateOrderID();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    float totalMoney = 0;
                     // 将购物车中的商品生成订单
                     for (int i = 0; i < buyIDlist.size(); i++) {
                         String buyQuantity = buyIDlist.get(i).buyQuantity;
                         String buyPrice = products2[i][2];
                         // 计算总价格，数据类型是float
-                        float totalMoney = Float.parseFloat(buyQuantity) * Float.parseFloat(buyPrice);
-                        // 转换成String
-                        String totalMoneyString = String.valueOf(totalMoney);
-                        try {
-                            orderID = OrderDAO.generateOrder(Global.getUserID(), totalMoneyString);
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        totalMoney += Float.parseFloat(buyQuantity) * Float.parseFloat(buyPrice);
+                    }
+                    String totalMoneyString = String.valueOf(totalMoney);
+                    try {
+                        OrderDAO.generateOrder(Global.getUserID(), totalMoneyString,orderID);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
                     }
                     JOptionPane.showMessageDialog(null, "生成订单成功！！！");
 
@@ -165,7 +174,10 @@ public class UserProductView {
                     buyIDlist.clear();
                     // 重新展示购物车信息
                     // 让card2立刻刷新
+//                    frame.dispose();
+//                    new UserProductView();
                     showCartTable();
+                    cardLayout.show(panel, "card2");
                 }
             }
         });
@@ -197,6 +209,17 @@ public class UserProductView {
         JButton cartButton = new JButton("购物车");
         cartButton.setBounds(600, 10, 100, 30);
         card1.add(cartButton);
+        // 返回按钮，返回用户主界面
+        JButton returnButton = new JButton("返回主界面");
+        returnButton.setBounds(50, 10, 100, 30);
+        card1.add(returnButton);
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new UserView();
+            }
+        });
         cartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

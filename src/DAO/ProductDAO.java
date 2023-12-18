@@ -5,13 +5,14 @@ import java.util.Vector;
     * @Description: 商品DAO，获取商品信息
  */
 public class ProductDAO {
+    static String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
+    static String userName="sa";
+    static String userPwd="yc030316";
     public static String[][] getProducts() {
         Connection con;
         Statement st;
         ResultSet rs;
-        String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
-        String userName="sa";
-        String userPwd="yc030316";
+
         String sql="select * from Products";
         String[][] products = new String[100][4];
         int i = 0;
@@ -43,9 +44,6 @@ public class ProductDAO {
         Connection con;
         Statement st;
         ResultSet rs;
-        String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
-        String userName="sa";
-        String userPwd="yc030316";
         String sql="select * from Products where ProductID IN (";
         // 动态添加每个ID值
         for (int i = 0; i < buyIDlist.size(); i++) {
@@ -90,10 +88,24 @@ public class ProductDAO {
         Connection con;
         Statement st;
         ResultSet rs;
-        String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
-        String userName="sa";
-        String userPwd="yc030316";
         String sql="update Products set ProductName = '" + productName + "', Price = " + productPrice + ", StockQuantity = " + productStock + " where ProductID = '" + productID + "'";
+        try {
+            con = DriverManager.getConnection(dbURL, userName, userPwd);
+            st = con.createStatement();
+            st.executeUpdate(sql);
+            st.close();
+            con.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("数据库连接失败！！！");
+        }
+    }
+    // insertProduct(productID)
+    public static void insertProduct(String productID, String productName, String productPrice, String productStock) {
+        Connection con;
+        Statement st;
+        ResultSet rs;
+        String sql="insert into Products values('" + productID + "', '" + productName + "', " + productPrice + ", " + productStock + ")";
         try {
             con = DriverManager.getConnection(dbURL, userName, userPwd);
             st = con.createStatement();

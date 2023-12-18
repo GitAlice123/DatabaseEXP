@@ -49,6 +49,18 @@ public class UserView {
         JButton orderButton = new JButton("订单");
         orderButton.setBounds(200, 100, 80, 25);
         panel.add(orderButton);
+        // 返回登录界面按钮
+        JButton backButton = new JButton("返回");
+        backButton.setBounds(150, 150, 80, 25);
+        panel.add(backButton);
+        // 返回登录界面按钮监听器
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new LoginView();
+            }
+        });
         // 商品按钮监听器
         productButton.addActionListener(new ActionListener() {
             @Override
@@ -62,7 +74,11 @@ public class UserView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-//                new UserOrderView();
+                try {
+                    new UserOrderView();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.*;
+import Global.Global;
 
 /*
     * @Description: 订单DAO
@@ -13,21 +14,18 @@ import java.sql.*;
     *
  */
 public class OrderDAO {
-    static String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
-    static String userName="sa";
-    static String userPwd="yc030316";
+    static String dbURL=Global.getDbURL();
+    static String userName=Global.getUserName();
+    static String userPwd=Global.getUserPwd();
     static Connection con;
     static Statement st;
     static ResultSet rs;
     // 生成订单
-    public static String generateOrder(String userID, String totalMoney) throws SQLException {
-        // 生成订单编号
-        String orderID = generateOrderID();
+    public static void generateOrder(String userID, String totalMoney, String orderID) throws SQLException {
         // 获取当前时间
         String orderTime = getCurrentTime();
         // 将订单信息插入数据库
         insertOrder(orderID, userID, orderTime, totalMoney);
-        return orderID;
     }
     // 生成订单编号
     public static String generateOrderID() throws SQLException {
@@ -94,7 +92,6 @@ public class OrderDAO {
     // 结算订单
     public static void payOrder(String orderID) throws SQLException {
         String sql="update Orders set HasPaid = 1 where OrderID = '" + orderID + "'";
-        // TODO：触发器，将订单项中的HasPaid也改为1，自动减少库存
         con = DriverManager.getConnection(dbURL, userName, userPwd);
         st = con.createStatement();
         st.executeUpdate(sql);

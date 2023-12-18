@@ -1,4 +1,6 @@
 package DAO;
+import Global.Global;
+
 import java.sql.*;
 
 /*
@@ -10,9 +12,9 @@ import java.sql.*;
     * 只需要实现在用户点击“结算”按钮后，将支付信息插入数据库即可
  */
 public class PaymentDAO {
-    static String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=online_shopping;trustServerCertificate=true";
-    static String userName="sa";
-    static String userPwd="yc030316";
+    static String dbURL= Global.getDbURL();
+    static String userName=Global.getUserName();
+    static String userPwd=Global.getUserPwd();
     static Connection con;
     static Statement st;
     static ResultSet rs;

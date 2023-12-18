@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import Global.Global;
 import DAO.*;
 
+import static DAO.OrderItemDAO.getYearlyRevenue;
+
 /**
  * @Description: 卖家销售记录界面
  * 展示商品销售记录：商品ID，商品名称，销售数量
@@ -55,7 +57,7 @@ public class SellerRecordView {
         JLabel yearLabel = new JLabel("年份:");
         yearLabel.setBounds(50, 320, 80, 25);
         panel.add(yearLabel);
-        String[] years = {"2020", "2021", "2022"};
+        String[] years = {"2020", "2021", "2022", "2023"};
         JComboBox yearComboBox = new JComboBox(years);
         yearComboBox.setBounds(100, 320, 80, 25);
         panel.add(yearComboBox);
@@ -67,9 +69,12 @@ public class SellerRecordView {
             public void actionPerformed(ActionEvent e) {
                 // 获取选中的年份
                 String year = (String) yearComboBox.getSelectedItem();
+                String total;
+                total = getYearlyRevenue(year);
+                if(total==null)
+                    total = "0";
                 // 展示该年度的销售总额
-                // 数据来源：OrderDAO
-                String total = "1000";
+                // 数据来源：OrderItemDAO
                 JOptionPane.showMessageDialog(null, "该年度的销售总额为：" + total);
             }
         });

@@ -86,13 +86,16 @@ public class LoginView extends JFrame{
                     Global.setUserID(userID);
                     JOptionPane.showMessageDialog(null, "登录成功！");
                     if (identity.equals("ADMIN")) {
-//                        new AdminView();
+                        new AdminView();
+                        // 退出登录界面
+                        ((JFrame)panel.getRootPane().getParent()).dispose();
                     } else if (identity.equals("CUS")) {
                         new UserView();
                         // 退出登录界面
                         ((JFrame)panel.getRootPane().getParent()).dispose();
                     } else if(identity.equals("SHOP")) {
-//                        new SellerView();
+                        new SellerView();
+                        ((JFrame)panel.getRootPane().getParent()).dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "登录失败！");
